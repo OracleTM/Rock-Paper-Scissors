@@ -1,4 +1,4 @@
-
+ 
 function getComputerChoice() {
   let randomMath = Math.floor((Math.random() * 3) + 1)
   if (randomMath == 1) {
