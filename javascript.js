@@ -10,90 +10,79 @@ function getComputerChoice() {
   }
 }
 
-function getHumanChoice() {
-  let word = prompt("chose rock, paper or scissors").toLowerCase();
-  if (word == "rock"){
-    return "rock"
-  } else if (word == "paper"){
-    return "paper"
-  } else if (word == "scissors"){
-    return "scissors"
-  } else {
-    return "Wrong chose"
-  }
-}
+function disableChoseButtons() {
+  switcher.removeChild(rock);
+  switcher.removeChild(paper);
+  switcher.removeChild(scissors);
+  const reloadButton = document.createElement("button")
+  reloadButton.textContent = "Reload Page";
+  switcher.appendChild(reloadButton);
+  reloadButton.addEventListener("click", () => {
+    location.reload()
+})
+};
 
-function playRound() {
 
+ let humanScore = 0;
+ let computerScore = 0;
+
+
+
+function playRound(val){
   let computer = (getComputerChoice());
-  let human = (getHumanChoice());
-  let rock = "rock";
-  let paper = "paper";
-  let scissors = "scissors";
-  
-  if (computer === rock && human === scissors) {
-    return "You Lose! scissors < rock"
-  } else if (computer === paper && human === rock) {
-    return "You Lose! paper > rock"
-  } else if (computer === scissors && human === paper) {
-    return "You lose! scissors > paper"
-  } else if (human === rock && computer === scissors) {
-    return "You Win! rock > scissors"
-  } else if (human === paper && computer === rock) {
-    return "You Win! paper > rock"
-  } else if (human === scissors && computer === paper) {
-    return "You Win! scissors > paper"
-  } else if (human === scissors && computer === scissors) {
-    return "Draw"
-  } else if (human === rock && computer === rock) {
-    return "Draw"
-  } else if (human === paper && computer === paper) {
-    return "Draw"
-  } else (human === "Wrong chose"); {
-   return "Wrong chose"
-  }
+  let result = ""
 
-}
+  if ((computer == "rock" && val == "scissors") ||
+      (computer == "paper" && val == "rock") ||
+      (computer == "scissors" && val == "paper")) {
 
-let humanScore = 0;
-let computerScore = 0;
+        computerScore = computerScore + 1
+        result = ("You Lose! " + computer + "  >  " + val
+          + "<br></br>Player scrore: " + humanScore + " Computer score: " + computerScore)
+         
 
-function playGame() { 
-  let text = playRound();
-  const lose1 = "You Lose! scissors < rock";
-  const lose2 = "You Lose! paper > rock";
-  const lose3 = "You lose! scissors > paper";
-  const win1 = "You Win! rock > scissors";
-  const win2 = "You Win! paper > rock";
-  const win3 = "You Win! scissors > paper";
-  const wrong = "Wrong chose";
-  if (lose1 === text || lose2 === text || lose3 === text ) {
-    computerScore++
-    return text
-  } else if(win1 === text || win2 === text || win3 === text) {
-    humanScore++
-    return text
-  } else if("Draw" === text) {
-    return "Draw"
-  } else if(wrong == text) {
-    return "Wrong chose, try again"
-  } 
-}
+        if (computerScore == 5) {
+          result = result + "<br></br>You lose! Reload page to play again !"
+          disableChoseButtons()
+        } 
+      }
 
-while (computerScore < 5 && humanScore < 5){
-  console.log(playGame());
-  if (humanScore <= 4 && computerScore <= 4){
-  console.log(humanScore + " You score");
-  console.log(computerScore + " Computer score");
-  } else if (humanScore == 5) {
-    console.log(humanScore + " You score")
-    console.log(computerScore + " Computer score")
-    console.log(" You Win!"); 
-  } else if (computerScore == 5) {
-    console.log(humanScore + " You score")
-    console.log(computerScore + " Computer score")
-    console.log(" You lose ;(");
-  } else {
-    console.log("Error");
-  }
-}
+       else if (val == computer) {
+        result = ("Draw " + computer + " = " + val
+          + "<br></br>Player scrore: " + humanScore + " Computer score: " + computerScore)
+      }
+
+       else {
+        humanScore = humanScore + 1
+        result = ("You Win! " + val + " > " + computer
+          + "<br></br>Player scrore: " + humanScore + " Computer score: " + computerScore)
+      } 
+      
+              if (humanScore == 5) {
+              result = result + "<br></br>You Win! Reload page to play again !"
+              disableChoseButtons()
+      }
+      document.getElementById('result').innerHTML = result
+      return
+};
+
+const switcher = document.querySelector("#switcher")
+
+
+
+const rock = document.querySelector("#rock");
+rock.addEventListener("click", () => {
+  playRound("rock");
+})
+
+const paper = document.querySelector("#paper");
+paper.addEventListener("click", () => {
+  playRound("paper");
+})
+
+const scissors = document.querySelector("#scissors");
+scissors.addEventListener("click", () => {
+  playRound("scissors");
+})
+
+
